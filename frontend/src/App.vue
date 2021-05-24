@@ -76,6 +76,10 @@
                   <b-menu-item :to="{name: 'templates'}" tag="router-link"
                     :active="activeItem.templates" data-cy="templates"
                     icon="file-image-outline" :label="$t('globals.terms.templates')"></b-menu-item>
+
+                  <b-menu-item :to="{name: 'bounces'}" tag="router-link"
+                    :active="activeItem.bounces" data-cy="bounces"
+                    icon="email-bounce" :label="$t('globals.terms.bounces')"></b-menu-item>
                 </b-menu-item><!-- campaigns -->
 
                 <b-menu-item :expanded="activeGroup.settings"

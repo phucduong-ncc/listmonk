@@ -66,6 +66,12 @@ const routes = [
     component: () => import(/* webpackChunkName: "main" */ '../views/Templates.vue'),
   },
   {
+    path: '/campaigns/bounces',
+    name: 'bounces',
+    meta: { title: 'Bounces', group: 'campaigns' },
+    component: () => import(/* webpackChunkName: "main" */ '../views/Bounces.vue'),
+  },
+  {
     path: '/campaigns/:id',
     name: 'campaign',
     meta: { title: 'Campaign', group: 'campaigns' },

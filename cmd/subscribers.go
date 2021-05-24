@@ -604,6 +604,51 @@ func handleManageSubscriberListsByQuery(c echo.Context) error {
 	return c.JSON(http.StatusOK, okResp{true})
 }
 
+// handleGetSubscriberBounces retrieves a subscriber's bounce records.
+func handleGetSubscriberBounces(c echo.Context) error {
+	var (
+		app   = c.Get("app").(*App)
+		subID = c.Param("id")
+	)
+
+	id, _ := strconv.ParseInt(subID, 10, 64)
+	if id < 1 {
+		return echo.NewHTTPError(http.StatusBadRequest, app.i18n.T("globals.messages.invalidID"))
+	}
+
+	var out []models.Bounce
+	stmt := fmt.Sprintf(app.queries.QueryBounces, "created_at", "ASC")
+	if err := db.Select(&out, stmt, 0, 0, subID, "", 0, 1); err != nil {
+		app.log.Printf("error fetching bounces: %v", err)
+		return echo.NewHTTPError(http.StatusInternalServerError,
+			app.i18n.Ts("globals.messages.errorFetching",
+				"name", "{globals.terms.bounce}", "error", pqErrMsg(err)))
+	}
+	return c.JSON(http.StatusOK, okResp{out})
+}
+
+// handleDeleteSubscriberBounces deletes all the bounces on a subscriber.
+func handleDeleteSubscriberBounces(c echo.Context) error {
+	var (
+		app = c.Get("app").(*App)
+		pID = c.Param("id")
+	)
+
+	id, _ := strconv.ParseInt(pID, 10, 64)
+	if id < 1 {
+		return echo.NewHTTPError(http.StatusBadRequest, app.i18n.T("globals.messages.invalidID"))
+	}
+
+	if _, err := app.queries.DeleteBouncesBySubscriber.Exec(id, nil); err != nil {
+		app.log.Printf("error deleting bounces: %v", err)
+		return echo.NewHTTPError(http.StatusInternalServerError,
+			app.i18n.Ts("globals.messages.errorDeleting",
+				"name", "{globals.terms.bounces}", "error", pqErrMsg(err)))
+	}
+
+	return c.JSON(http.StatusOK, okResp{true})
+}
+
 // handleExportSubscriberData pulls the subscriber's profile,
 // list subscriptions, campaign views and clicks and produces
 // a JSON report. This is a privacy feature and depends on the

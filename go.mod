@@ -6,8 +6,11 @@ require (
 	github.com/Masterminds/sprig/v3 v3.2.2
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
 	github.com/disintegration/imaging v1.6.2
+	github.com/emersion/go-imap v1.1.0
+	github.com/emersion/go-message v0.15.0
 	github.com/gofrs/uuid v3.2.0+incompatible
 	github.com/jmoiron/sqlx v1.2.0
+	github.com/knadh/go-pop3 v0.1.0
 	github.com/knadh/goyesql/v2 v2.1.1
 	github.com/knadh/koanf v0.12.0
 	github.com/knadh/smtppool v0.2.1
@@ -27,3 +30,5 @@ require (
 )
 
 replace github.com/imdario/mergo => github.com/imdario/mergo v0.3.8
+
+replace github.com/knadh/go-pop3 => /home/kailash/code/go/my/knadh/go-pop3
